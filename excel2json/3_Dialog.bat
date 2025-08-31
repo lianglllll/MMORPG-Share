@@ -1,4 +1,4 @@
-@SET EXCEL_FOLDER=.\excel\DialogExecl
+@SET EXCEL_FOLDER=.\excel\Client\DialogExecl
 @SET JSON_FOLDER=.\out\DialogJson
 @SET CODE_FOLDER=.\out\DialogDefine
 @SET EXE=.\excel2json.exe

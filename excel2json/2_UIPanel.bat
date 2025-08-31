@@ -1,4 +1,4 @@
-@SET EXCEL_FOLDER=.\excel\UIPanel
+@SET EXCEL_FOLDER=.\excel\Client\UIPanel
 @SET JSON_FOLDER=.\out\UIPanelJson
 @SET CODE_FOLDER=.\out\UIPanelDefine
 @SET EXE=.\excel2json.exe
