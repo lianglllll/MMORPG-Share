@@ -10,6 +10,12 @@
 @SET DEST_FOLDER_4=..\..\MMORPG-Client\MMORPG\Assets\Scripts\LocalData\DataDefine
 @SET DEST_FOLDER_5=..\..\MMORPG-Server\MMORPG\Common\Summer\StaticData\DataDefine
 
+:: 创建目标文件夹（如果不存在）
+@IF NOT EXIST "%DEST_FOLDER_1%" mkdir "%DEST_FOLDER_1%"
+@IF NOT EXIST "%DEST_FOLDER_2%" mkdir "%DEST_FOLDER_2%"
+@IF NOT EXIST "%DEST_FOLDER_4%" mkdir "%DEST_FOLDER_4%"
+@IF NOT EXIST "%DEST_FOLDER_5%" mkdir "%DEST_FOLDER_5%"
+
 :: execl转json和生成对应的define文件
 ::@ECHO Converting excel files in folder %EXCEL_FOLDER% ...
 for %%i in ("%EXCEL_FOLDER%\*.xlsx") do (

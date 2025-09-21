@@ -12,7 +12,7 @@ set OUTPUT_SUFFIX=/ProtoClass
 
 rem 定义相对的源、目标和复制目录（不含共同后缀）
 set "REL_DIRS=Chat Combat Common ControlCenter Game Login Scene DBProxy TimeSync"
-rem 定义复制目录，使用“-”表示不复制
+rem 定义复制目录，使用"-"表示不复制
 set "REL_COPY_DIRS=Chat Combat Common _ Game Login Scene DBProxy _"
 
 rem 转换字符串为数组以便于索引
@@ -41,6 +41,12 @@ for /l %%i in (0, 1, !num_dirs!) do (
     set "SOURCE_DIR=%BASE_PATH%!DIR_ARR[%%i]!!SOURCE_SUFFIX!"
     set "OUTPUT_DIR=%BASE_PATH%!DIR_ARR[%%i]!!OUTPUT_SUFFIX!"
     
+    rem 确保输出目录存在
+    if not exist "!OUTPUT_DIR!" (
+        echo Creating output directory: !OUTPUT_DIR!
+        mkdir "!OUTPUT_DIR!"
+    )
+    
     rem 判断是否进行复制
     set "COPY_DIR=!CPY_ARR[%%i]!"
     if "!COPY_DIR!"=="_" (
@@ -54,23 +60,29 @@ for /l %%i in (0, 1, !num_dirs!) do (
         ) else (
             set "FULL_COPY_DIR=%BASE_PATH2%!COPY_DIR!/"
         )
+        
+        rem 检查并创建目标复制目录（如果不存在）
+        if not exist "!FULL_COPY_DIR!" (
+            echo Creating copy directory: !FULL_COPY_DIR!
+            mkdir "!FULL_COPY_DIR!"
+        )
     )
 
     rem 编译当前目录下的所有 .proto 文件，加入额外的 proto path
     for %%f in ("!SOURCE_DIR!/*.proto") do (
-        :: echo Compiling %%f
+        echo Compiling %%f
         "%PROTOC_PATH%" --proto_path="!SOURCE_DIR!" --proto_path="%BASE_PATH%" --csharp_out="!OUTPUT_DIR!" "%%f"
     )
     
     rem 复制生成的文件到目标复制目录，如果需要的话
     if "!SKIP_COPY!"=="false" (
         for %%f in ("!OUTPUT_DIR!\*.*") do (
-            :: echo Copying %%~nxf to !FULL_COPY_DIR!
+            echo Copying %%~nxf to !FULL_COPY_DIR!
             copy "%%f" "!FULL_COPY_DIR!" > nul
         )
     )
 )
 
-echo Compilation and copying finished.
+echo Compilation and copying finished. 
 endlocal
 pause
